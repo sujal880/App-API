@@ -23,12 +23,15 @@ const registeruser=async(req,res)=>{
         const hashedpassword=await bcrypt.hash(password,10);
         const newuser=new user({email:email,password:hashedpassword});
         await newuser.save();
+        // const user={email,password};
+        // console.log(user);
 
         const token=jwt.sign({userId:newuser._id},secretkey,{expiresIn:'1h'});
         res.status(200).json({
             status:200,
             message:"User Created",
-            data:token
+            token:token,
+            data:newuser
         })
     }
 
